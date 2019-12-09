@@ -2,6 +2,8 @@
 #include <sys/sysinfo.h>
 #include <unistd.h>
 #include <chrono>
+#include <utility>
+#include <type_traits>
 
 using namespace std;
 
@@ -77,6 +79,34 @@ auto getAv2() {
 	
 }
 
+
+template <typename Callable>
+auto bounced(Callable const& callable, unsigned long long interval = 1000) {
+	using namespace std::chrono;
+
+	static_assert(std::is_invocable_v<Callable>, "The specified callable is not callable");
+
+	constexpr bool does_returns_void = std::is_void_v<decltype(callable())>;
+	static time_point<steady_clock> t;
+
+	if constexpr (!does_returns_void) {
+		static decltype(callable()) res;
+		if ((steady_clock::now() - t).count() > interval) {
+			res = callable();
+			t = steady_clock::now();
+			
+		}
+		return res;
+	} else {
+		if ((steady_clock::now() - t).count() > interval) {
+			callable();
+			t = steady_clock::now();
+			
+		}
+	}
+}
+
+
 static void Three(benchmark::State& state) {
   for (auto _ : state) {
 	  auto c = getAv();
@@ -95,9 +125,20 @@ static void Four(benchmark::State& state) {
 	  auto c = getAv2();
     benchmark::DoNotOptimize(c);
   }
-
 }
 BENCHMARK(Four);
 
+
+
+
+
+
+static void Five(benchmark::State& state) {
+  for (auto _ : state) {
+	  auto c = bounced(&getAv);
+    benchmark::DoNotOptimize(c);
+  }
+}
+BENCHMARK(Five);
 
 // BENCHMARK_MAIN();
