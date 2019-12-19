@@ -39,28 +39,40 @@ class account {
 };
 
 class Bank {
-    vector<account> accounts;
 
     public:
 
+    vector<account> accounts;
         auto create_account(int min_amount) {
             accounts.emplace_back();
             auto item = accounts.rbegin();
             item->deposit(min_amount);
-            return item;
+            return accounts.size() - 1;
         }
 
         void transfer(auto from, auto to, int amount) {
-            if (from->balance() >= amount) {
-                from->deposit(-amount);
-                to->deposit(amount);
+		lock(accounts[from].get_mutex(), accounts[to].get_mutex());
+		lock_guard<mutex> from_lock(accounts[from].get_mutex(), adopt_lock);
+		lock_guard<mutex> to_lock(accounts[to].get_mutex(), adopt_lock);
+
+            if (accounts[from].balance() >= amount) {
+		    assert_positive();
+                accounts[from].deposit(-amount);
+                accounts[to].deposit(amount);
+		assert_positive();
             }
         }
+
+	void assert_positive() const {
+		for (auto &acc : accounts)
+			if (acc.balance() < 0 )
+				throw invalid_argument("Negative balance!");
+	}
 };
 
 
 auto trans(Bank& bank, auto from, auto to, int amount) {
-    return async(launch::async, [&] (int amount) {
+    return async(launch::async, [&, from, to] (int amount) {
         bank.transfer(from, to, amount);
     }, amount);
 }
@@ -75,18 +87,18 @@ int main() {
 
         vector<future<void>> futures;
 
-        for (int i = 0 ; i < 100 ; i++ ) {
+        for (int i = 0 ; i < 1000 ; i++ ) {
             futures.emplace_back(trans(bank, one, two, 100));
             futures.emplace_back(trans(bank, two, one, 100));
         }
 
         for (auto & f : futures) {
-            f.wait();
+            f.get();
         }
 
 
-        cout << "one balance: " << one->balance() << endl;
-        cout << "two balance: " << two->balance() << endl;
+        cout << "one balance: " << bank.accounts[one].balance() << endl;
+        cout << "two balance: " << bank.accounts[two].balance() << endl;
 
     } catch (exception &err) {
         cerr << err.what() << endl;

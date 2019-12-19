@@ -1,2 +1,2 @@
 all:
-    g++ -std=c++2a -lpthread -fconcepts main.cpp
+	g++ -std=c++2a -lpthread -fconcepts main.cpp
