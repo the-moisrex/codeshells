@@ -1,4 +1,5 @@
 #include "pch.h"
+#include <system_error>
 
 using namespace boost;
 using namespace boost::asio;
@@ -18,7 +19,7 @@ class session {
 
     void read() {
         cout << "Reading ..." << endl;
-        async_read(_socket, buffer(buf, 78), [this] (system::error_code const& ec2, std::size_t length){
+        _socket.async_read_some(buffer(buf, 80), [this] (std::error_code const& ec2, std::size_t length){
             cout << "Reading: " << length << endl;
             if (!ec2) {
               buf[buf.size() - 2] = '\0';
@@ -37,7 +38,7 @@ Content-Type: text/html; charset=utf-8
 
 main page
 )END";
-        async_write(_socket, buffer(res, sizeof(res) / sizeof(char)), [](system::error_code const& ec3, std::size_t len) {
+        async_write(_socket, buffer(res, sizeof(res) / sizeof(char)), [](std::error_code const& ec3, std::size_t len) {
               cout << "Done" << endl;
             });
 
@@ -63,7 +64,7 @@ auto main() -> int {
 
   do_accept = [&] {
     try {
-    acceptor.async_accept([&] (system::error_code const& ec, tcp::socket socket) {
+    acceptor.async_accept([&] (std::error_code const& ec, tcp::socket socket) {
         cout << ec << " " << "Connection established." << endl;
         if (!ec)
           sessions.emplace_back(std::move(socket));
@@ -77,7 +78,9 @@ auto main() -> int {
 
 
 
-  io.run();
+  std::error_code ec;
+  boost::system::error_code bec;
+  io.run(bec);
 
   } catch (std::exception const& err) {
       cerr << err.what() << endl;
