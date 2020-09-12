@@ -6,16 +6,16 @@
 #include <fcntl.h>
 #include <string.h>
 
-auto main() -> int {
+int main() {
 
-  auto file = open(".", O_TMPFILE | O_RDWR, S_IRUSR | S_IWUSR);
+  int file = open(".", O_TMPFILE | O_RDWR, S_IRUSR | S_IWUSR);
   if (file == -1) {
     printf("Was not able to create a temp file.\n");
     return 1;
   }
 
-  auto data = "hello world.";
-  auto len = strlen(data);
+  char data[] = "hello world.";
+  int len = strlen(data);
   if (write(file, data, len) != len) {
     printf("was not able to write anything to the file.\n");
     return 1;
@@ -30,6 +30,7 @@ auto main() -> int {
   }
 
   printf("%s\n", buf);
+
 
   close(file);
 
