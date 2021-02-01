@@ -34,14 +34,14 @@ set(Boost_USE_DEBUG_LIBS         ON) # ignore debug libs and
 set(Boost_USE_RELEASE_LIBS       ON)  # only find release libs
 set(Boost_USE_MULTITHREADED      ON)
 set(Boost_USE_STATIC_RUNTIME    OFF)
-find_package(Boost 1.66.0 COMPONENTS)
+find_package(Boost 1.66.0 COMPONENTS program_options filesystem regex coroutine)
 
 if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
   add_executable(${exec_name}
     main.cpp
     )
-  target_link_libraries(${exec_name} PRIVATE ${Boost_LIBRARIES} benchmark benchmark_main pthread)
+  target_link_libraries(${exec_name} PRIVATE ${Boost_LIBRARIES})
 
   # optimize the file size:
   #target_compile_options(${exec_name} PRIVATE -pthread)

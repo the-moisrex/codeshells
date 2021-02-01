@@ -1,0 +1,56 @@
+ab -n 10000 -c 100 http://localhost:3000/build.ninja
+This is ApacheBench, Version 2.3 <$Revision: 1879490 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost (be patient)
+Completed 1000 requests
+Completed 2000 requests
+Completed 3000 requests
+Completed 4000 requests
+Completed 5000 requests
+Completed 6000 requests
+Completed 7000 requests
+Completed 8000 requests
+Completed 9000 requests
+Completed 10000 requests
+Finished 10000 requests
+
+
+Server Software:        Boost.Beast/300
+Server Hostname:        localhost
+Server Port:            3000
+
+Document Path:          /build.ninja
+Document Length:        21259 bytes
+
+Concurrency Level:      100
+Time taken for tests:   1.241 seconds
+Complete requests:      10000
+Failed requests:        0
+Total transferred:      213580000 bytes
+HTML transferred:       212590000 bytes
+Requests per second:    8056.86 [#/sec] (mean)
+Time per request:       12.412 [ms] (mean)
+Time per request:       0.124 [ms] (mean, across all concurrent requests)
+Transfer rate:          168045.37 [Kbytes/sec] received
+
+Connection Times (ms)
+min  mean[+/-sd] median   max
+Connect:        0    1   0.7      0       6
+Processing:     5   12   2.5     12      36
+Waiting:        1   11   2.5     11      32
+Total:          5   12   2.5     12      37
+WARNING: The median and mean for the initial connection time are not within a normal deviation
+These results are probably not that reliable.
+
+Percentage of the requests served within a certain time (ms)
+50%     12
+66%     12
+75%     13
+80%     13
+90%     14
+95%     15
+98%     17
+99%     30
+100%     37 (longest request)
