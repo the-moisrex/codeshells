@@ -29,4 +29,8 @@ int start_client(struct sockaddr* server, int server_size) {
     read(sock, buf, count);
     write(1, buf, count);
   }
+
+  return 0;
 }
+
+

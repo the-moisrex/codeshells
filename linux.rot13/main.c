@@ -30,7 +30,9 @@ int main(int argc, char** argv) {
     if (start_server((struct sockaddr*)&server, sizeof(server)) == -1) {
       errExit("Can't start the server.");
     }
+
   } else { // client
+
     struct hostent* host_info;
     struct sockaddr_in server;
     char* server_name;
