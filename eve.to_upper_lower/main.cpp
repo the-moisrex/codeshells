@@ -7,13 +7,9 @@
 
 using namespace std;
 
-namespace stl {
-using namespace std;
-}
-
 inline void eve_to_lower(auto &str) noexcept {
-  using value_type = typename stl::remove_cvref_t<decltype(str)>::value_type;
-  using char_type = stl::make_unsigned_t<value_type>;
+  using value_type = typename remove_cvref_t<decltype(str)>::value_type;
+  using char_type = make_unsigned_t<value_type>;
   static constexpr char_type alphabet_length = 'z' - 'a';
   static constexpr char_type a_A_offset = 'a' - 'A';
   auto start = reinterpret_cast<char_type *>(str.data());
@@ -24,8 +20,8 @@ inline void eve_to_lower(auto &str) noexcept {
 }
 
 inline void eve_to_upper(auto &str) noexcept {
-  using value_type = typename stl::remove_cvref_t<decltype(str)>::value_type;
-  using char_type = stl::make_unsigned_t<value_type>;
+  using value_type = typename remove_cvref_t<decltype(str)>::value_type;
+  using char_type = make_unsigned_t<value_type>;
   static constexpr char_type alphabet_length = 'z' - 'a';
   static constexpr char_type a_A_offset = 'a' - 'A';
   auto start = reinterpret_cast<char_type *>(str.data());
