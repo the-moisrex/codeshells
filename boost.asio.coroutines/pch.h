@@ -1,0 +1,17 @@
+#include <iostream>
+#include <utility>
+#include <memory>
+#include <cstdlib>
+#include <set>
+#include <deque>
+#include <list>
+#include <ctime>
+#include <string>
+#include <vector>
+#include <boost/coroutine/all.hpp>
+#include <boost/asio.hpp>
+#include <boost/bind.hpp>
+#include <boost/asio/spawn.hpp>
+#include <boost/asio/write.hpp>
+#include <boost/asio/buffer.hpp>
+#include <boost/asio/ip/tcp.hpp>
