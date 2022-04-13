@@ -1,0 +1,3 @@
+[submodule "sqlite3-intro/sqlite3pp"]
+	path = sqlite3-intro/sqlite3pp
+	url = https://github.com/iwongu/sqlite3pp.git
