@@ -46,3 +46,23 @@ for (let person in people) {
         .replace('.', ' [dot] ');
 }
 console.log(people)
+
+
+// getting an iterator of [index, value]
+console.log(arr.entries())
+for (const [index, item] of arr.entries()) {
+    console.log(index, item);
+}
+
+const ob1 = {
+    // ES6 Enhanced Object Literals
+    arr,
+
+    print() {
+        console.log(this);
+    },
+
+    [`day-${2 + 2}`]: 'cool day'
+};
+
+ob1.print();
