@@ -62,7 +62,28 @@ const ob1 = {
         console.log(this);
     },
 
-    [`day-${2 + 2}`]: 'cool day'
+    [`day-${2 + 2}`]: 'cool day',
+    deeply: {
+        nested: {
+            object: "123"
+        }
+    }
 };
 
 ob1.print();
+
+
+
+// optional chaining
+console.log(ob1?.deeply?.nested?.object || "default");
+console.log(ob1?.deeply?.not_nested?.object);
+console.log(ob1?.deeply?.not_nested?.object ?? "default");
+console.log(ob1?.deeply?.not_nested?.func?.() ?? "No function");
+console.log(arr?.[2] ?? "no 23")
+console.log(arr?.[23] ?? "no 23")
+console.log(ob1[24]?.nice ?? "no 24")
+
+
+console.log(...Object.values(ob1));
+console.log(...Object.keys(ob1));
+console.log(...Object.entries(ob1));
