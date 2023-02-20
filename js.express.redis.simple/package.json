@@ -1,0 +1,23 @@
+{
+  "name": "js.express",
+  "version": "1.0.0",
+  "description": "JavaScript ExpressJS test",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "expressjs",
+    "js",
+    "test"
+  ],
+  "author": "CodeShell",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "express": "^4.18.1",
+    "ioredis": "^5.2.3",
+    "redis": "^4.3.1"
+  }
+}
