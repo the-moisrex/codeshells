@@ -8,3 +8,4 @@ a.out
 */*.user
 .ccls-cache/
 .ipynb_checkpoints
+.idea/
