@@ -1,25 +1,34 @@
 #include <stdio.h>
 #include <string.h>
 
-int main() {
-    char password [15];
-    int authorised = 0;
-    
-    printf("Password: ");
-    gets(password);
+void not_main() {
 
-    if (strcmp(password, "one") == 0) {
-        printf("Correct password\n");
-        authorised = 1;
-    } else {
-        printf("Incorrect Password\n");
-    }
+  struct {
+    char password[15];
+    int authorised;
+  } data;
 
-    if (authorised) {
-        printf("Well done hacker. %d\n", authorised);
-    } else {
-        printf("Nope, not authorised. %d %s (%lu chars)\n", authorised, password, strlen(password));
-    }
-  return 0;
+  data.authorised = 0;
+
+  printf("Password: ");
+  gets(data.password);
+
+  if (strcmp(data.password, "one") == 0) {
+    printf("Correct password\n");
+    data.authorised = 1;
+  } else {
+    printf("Incorrect Password\n");
+  }
+
+  if (data.authorised) {
+    printf("Well done hacker. %d\n", data.authorised);
+  } else {
+    printf("Nope, not authorised. %d %s (%lu chars)\n", data.authorised,
+           data.password, strlen(data.password));
+  }
 }
 
+int main() {
+  not_main();
+  return 0;
+}
