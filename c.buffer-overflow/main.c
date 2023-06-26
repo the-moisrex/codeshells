@@ -3,28 +3,27 @@
 
 void not_main() {
 
-  struct {
-    char password[15];
-    int authorised;
-  } data;
-
-  data.authorised = 0;
+  char password[15];
+  // memory reordering effect; doesn't work either
+  asm volatile("" ::: "memory");
+  int authorised = 0;
 
   printf("Password: ");
-  gets(data.password);
+  gets(password);
 
-  if (strcmp(data.password, "one") == 0) {
+  if (strcmp(password, "one") == 0) {
     printf("Correct password\n");
-    data.authorised = 1;
+    authorised = 1;
   } else {
     printf("Incorrect Password\n");
   }
 
-  if (data.authorised) {
-    printf("Well done hacker. %d\n", data.authorised);
+  if (authorised) {
+    printf("Well done hacker. %d\n", authorised);
   } else {
-    printf("Nope, not authorised. %d %s (%lu chars)\n", data.authorised,
-           data.password, strlen(data.password));
+    printf("Nope, not authorised. %d %s (%lu chars) (diff: %d)\n", authorised,
+           password, strlen(password),
+           (int)((void *)&authorised - (void *)&password));
   }
 }
 
