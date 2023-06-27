@@ -7,12 +7,16 @@
 
 int main() {
   struct stat stats;
+  fpos_t pos;
   int const fd = fileno(stdout);
-  printf("fd: %d\n", fd);
   if (fstat(fd, &stats) == -1) {
     perror("fstat");
     exit(0);
   }
+
+  // printf("ftell: %ld\n", ftell(stdout));
+  // printf("fd: %d\n", fd);
+  printf("fgetpos: %d\n", fgetpos(stdout, &pos));
 
   if (isatty(fd) && errno == 0) {
     printf("It's a Terminal.\n");
