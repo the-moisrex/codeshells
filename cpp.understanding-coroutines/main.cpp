@@ -96,11 +96,10 @@ struct task {
         : id{inp_id}, spaces{sp}, coro(h) {
         spaces += " ";
         cout << spaces << "task(" << id << ")::init: " << coro.promise().id
-             << endl;
+            << " result: "  << coro.promise().result << endl;
     }
     task(task&& t) = delete;
     ~task() {
-        spaces.pop_back();
         cout << spaces << "task(" << id << ")::dtor: " << coro.promise().id
              << endl;
         coro.destroy();
@@ -151,21 +150,26 @@ struct task {
     std::coroutine_handle<promise_type> coro;
 };
 
+static int random_val = 10;
 task<int> get_random() {
     std::cout << "--- in get_random() ---" << endl;
-    co_return 4;
+    co_return random_val++;
 }
 
 task<int> test() {
+    std::cout << "--- in test() ---" << endl;
     task<int> v = get_random();
     task<int> u = get_random();
-    std::cout << "--- in test() ---" << endl;
+    std::cout << "--- in test() - about to co_await ---" << endl;
     int x = (co_await v + co_await u);
+    std::cout << "--- in test() - after co_awaits ---" << endl;
     co_return x;
 }
 
 int main() {
     task<int> t = test();
     int result = t();
-    std::cout << "--- " << result << " ---" << endl;
+    std::cout << "--- Result" << result << " ---" << endl;
+    std::cout << "--- Next Task id: " << next_id << " ---" << endl;
+    std::cout << "--- Next random value: " << random_val << " ---" << endl;
 }
