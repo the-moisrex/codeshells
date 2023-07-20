@@ -9,3 +9,4 @@ a.out
 .ccls-cache/
 .ipynb_checkpoints
 .idea/
+build-*/
