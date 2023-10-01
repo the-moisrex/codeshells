@@ -25,7 +25,8 @@ template <typename NType = std::ptrdiff_t>
 #define next_ptr(ptr, N)                                                       \
   _Generic((ptr),                                                              \
       void *: ((void *)((intptr_t *)ptr + N)),                                 \
-      void const *: ((void const *)((intptr_t const *)ptr + N)))
+      void const *: ((void const *)((intptr_t const *)ptr + N)))/*,               \
+      default: ((ptr) + (N)))*/
 #endif
 
 #define typename(x)                                                            \
