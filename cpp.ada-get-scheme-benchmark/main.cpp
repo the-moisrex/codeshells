@@ -13,7 +13,7 @@ static constexpr std::string_view is_special_list2[] = {
 } // namespace details
 
 namespace ada::scheme {
-enum type : uint8_t {
+enum class type2 : uint8_t {
   HTTP,
   HTTPS,
   WS,
@@ -22,6 +22,17 @@ enum type : uint8_t {
   FILE,
   NOT_SPECIAL,
 };
+
+enum type : uint8_t {
+  HTTP = 0,
+  NOT_SPECIAL = 1,
+  HTTPS = 2,
+  WS = 3,
+  FTP = 4,
+  WSS = 5,
+  FILE = 6
+};
+
 
 }
 
@@ -39,9 +50,9 @@ get_scheme_type(std::string_view const scheme) noexcept {
   return ada::scheme::NOT_SPECIAL;
 }
 
-constexpr ada::scheme::type
+constexpr ada::scheme::type2
 get_simple_scheme_type(std::string_view const scheme) noexcept {
-  std::underlying_type_t<ada::scheme::type> i = 0;
+  std::underlying_type_t<ada::scheme::type2> i = 0;
   for (; i != 6; ++i) { // hopefully it'll be unrolled
     auto const scheme_ith = details::is_special_list2[i];
     if (scheme == scheme_ith) {
@@ -49,7 +60,7 @@ get_simple_scheme_type(std::string_view const scheme) noexcept {
     }
   }
 
-  return static_cast<ada::scheme::type>(i);
+  return static_cast<ada::scheme::type2>(i);
 }
 
 static void Ada(benchmark::State &state) {
