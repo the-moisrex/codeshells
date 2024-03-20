@@ -1,5 +1,10 @@
 #include <benchmark/benchmark.h>
 
+#include <algorithm>
+#include <random>
+#include <array>
+#include <string>
+
 using namespace std;
 
 namespace details {
@@ -84,3 +89,57 @@ static void Simple(benchmark::State &state) {
   }
 }
 BENCHMARK(Simple);
+
+
+///////////////////////////////
+
+template <typename StrType = std::string>
+static StrType str_generator(
+  std::size_t      size  = 10'000,
+  std::string_view chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") {
+    StrType str;
+    str.reserve(size);
+    for (std::size_t i = 0; i < size; i++) {
+        str.append(chars);
+    }
+    std::shuffle(str.begin(), str.end(), std::mt19937(std::random_device()()));
+    return str.substr(0, size);
+}
+
+
+template <std::size_t count>
+static std::array<std::string, count> str_array_generator(
+  std::size_t      size  = 10'000,
+  std::string_view chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") {
+    std::array<std::string, count> strs;
+    for (auto& str : strs) {
+        str = str_generator(size, chars);
+    }
+    return strs;
+}
+
+
+const auto scheme_strs = str_array_generator<200>();
+
+static void LongStrAda(benchmark::State &state) {
+  int index = 0;
+  for (auto _ : state) {
+    auto str = scheme_strs[index++ % scheme_strs.size()];
+    auto t = get_scheme_type(str);
+    benchmark::DoNotOptimize(str);
+    benchmark::DoNotOptimize(t);
+  }
+}
+BENCHMARK(LongStrAda);
+
+static void LongStrSimple(benchmark::State &state) {
+  int index = 0;
+  for (auto _ : state) {
+    auto str = scheme_strs[index++ % scheme_strs.size()];
+    auto t = get_simple_scheme_type(str);
+    benchmark::DoNotOptimize(str);
+    benchmark::DoNotOptimize(t);
+  }
+}
+BENCHMARK(LongStrSimple);
+
