@@ -41,12 +41,8 @@ get_scheme_type(std::string_view const scheme) noexcept {
 
 constexpr ada::scheme::type
 get_simple_scheme_type(std::string_view const scheme) noexcept {
-  if (scheme.empty()) {
-    return ada::scheme::NOT_SPECIAL;
-  }
-
   std::underlying_type_t<ada::scheme::type> i = 0;
-  for (; i != 7; ++i) {
+  for (; i != 6; ++i) { // hopefully it'll be unrolled
     auto const scheme_ith = details::is_special_list2[i];
     if (scheme == scheme_ith) {
       break;
