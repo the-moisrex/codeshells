@@ -1,0 +1,32 @@
+:root {
+    --bg: #333;
+    --fg: #eee;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--fg);
+    margin: 0;
+    padding: 0;
+    font-size: 1.5em;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: 100vh;
+}
+
+#main a {
+    background: linear-gradient(to right,currentColor 0%,currentColor 100%);
+    background-size: 0 6%;
+    background-position: left 100%;
+    background-repeat: no-repeat;
+    transition-duration: 0.5s;
+    color: var(--fg);
+    text-decoration: none;
+}
+
+#main a:hover {
+    background-size: 100% 6%;
+}
