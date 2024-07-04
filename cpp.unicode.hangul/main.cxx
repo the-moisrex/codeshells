@@ -496,9 +496,27 @@ std::string utf32_to_utf8(std::u32string const &utf32_str) {
   return utf8_str;
 }
 
+std::u16string utf32_to_utf16(const std::u32string& utf32_str) {
+    std::u16string utf16_str;
+    utf16_str.reserve(utf32_str.length());
+
+    for (char32_t c : utf32_str) {
+        if (c <= 0xFFFF) {
+            utf16_str.push_back(static_cast<char16_t>(c));
+        } else {
+            c -= 0x10000;
+            utf16_str.push_back(static_cast<char16_t>((c >> 10) + 0xD800));
+            utf16_str.push_back(static_cast<char16_t>((c & 0x3FF) + 0xDC00));
+        }
+    }
+
+    return utf16_str;
+}
+
 int main() {
 
   std::set<size_t> sizes;
+  std::set<size_t> u16sizes;
 
   for (uint32_t index = hangul_syllable_base;
        index != (hangul_syllable_base + hangul_syllable_count); ++index) {
@@ -512,16 +530,21 @@ int main() {
     auto const u32_len = decompose_hangul_code_point(out, code_point);
 
     auto converted = utf32_to_utf8(out);
+    auto u16 = utf32_to_utf16(out);
 
-    println("{} {} {} {}, out: {} {}; converted: {}", index, utf8, len,
+    println("{} {} {} {}, out: {} {}; converted: {}; u16: {}", index, utf8, len,
             hangul_decompose_length(index), out.size(), u32_len,
-            converted.size());
+            converted.size(), u16.size());
     sizes.insert(converted.size());
+    u16sizes.insert(u16.size());
   }
 
   for (auto const len : sizes) {
     println("{}", len);
   }
 
+  for (auto const len : u16sizes) {
+    println("u16: {}", len);
+  }
   return 0;
 }
