@@ -36,6 +36,7 @@ struct garbage_collector {
       println("Remove {} with length {}", ptr, length);
       ::operator delete(ptr);
     }
+    trashes.clear();
   }
 
   ~garbage_collector() { cleanup(); }
