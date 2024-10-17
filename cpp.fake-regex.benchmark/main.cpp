@@ -1,6 +1,6 @@
-#include <benchmark/benchmark.h>
 #include <algorithm>
 #include <array>
+#include <benchmark/benchmark.h>
 #include <cctype>
 #include <cstdint>
 #include <print>
@@ -8,7 +8,6 @@
 #include <utility>
 
 using namespace std;
-
 
 namespace mine {
 template <std::size_t Len> struct const_string_view : std::array<char, Len> {
@@ -22,8 +21,8 @@ template <std::size_t Len> struct const_string_view : std::array<char, Len> {
   constexpr std::size_t size() const noexcept { return arr_type::size() - 1; }
 };
 
-template <std::size_t Len>
-const_string_view(char const[Len]) -> const_string_view<Len>;
+// template <std::size_t Len>
+// const_string_view(char const[Len]) -> const_string_view<Len>;
 
 template <const_string_view Format = "dddd-dd-dd">
 constexpr auto for_all(auto func, std::string_view date) noexcept {
@@ -78,22 +77,22 @@ bool verify_date_format(const char *date) {
 } // namespace orig
 
 static void Orig(benchmark::State &state) {
+  std::string str = "1111-22-33";
+  int i = 0;
   for (auto _ : state) {
-    auto res = orig::verify_date_format("1111-11-11") &&
-               orig::verify_date_format("1110-21-31") &&
-               orig::verify_date_format("111-21-31");
+    ++str[i % str.size()];
+    auto res = orig::verify_date_format(str.data());
     benchmark::DoNotOptimize(res);
   }
 }
 BENCHMARK(Orig);
 
-
-
 static void Mine(benchmark::State &state) {
+  std::string str = "1111-22-33";
+  int i = 0;
   for (auto _ : state) {
-    auto res = mine::verify_date_format("1111-11-11") &&
-               mine::verify_date_format("1110-21-31") &&
-               mine::verify_date_format("111-21-31");
+    ++str[i % str.size()];
+    auto res = mine::verify_date_format({str.data(), str.size()});
     benchmark::DoNotOptimize(res);
   }
 }
