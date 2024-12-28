@@ -58,7 +58,7 @@ int test5(char32_t cu2, char32_t code_point, char32_t cu3) {
   return 2;
 }
 
-volatile char32_t one = 1, two = 2, three = 3;
+volatile char32_t one = 0b1110'1000, two = 0xD7F0, three = 0b0011'1111;
 
 static void One(benchmark::State &state) {
   for (auto _ : state) {
