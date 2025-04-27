@@ -10,3 +10,5 @@ a.out
 .ipynb_checkpoints
 .idea/
 build-*/
+
+.venv/
