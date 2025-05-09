@@ -20,6 +20,15 @@ static void v57(benchmark::State &state) {
 }
 BENCHMARK(v57);
 
+static void v111(benchmark::State &state) {
+  char32_t val;
+  for (auto _ : state) {
+    val %= 111;
+    benchmark::DoNotOptimize(val);
+  }
+}
+BENCHMARK(v111);
+
 static void v57045(benchmark::State &state) {
   char32_t val;
   for (auto _ : state) {
