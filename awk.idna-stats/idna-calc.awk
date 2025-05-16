@@ -1,7 +1,7 @@
 BEGIN {
   FS = ";"
   max_codepoint = 0x3347F   # 210943 decimal
-  max_codepoint = 0x10FFFF
+  # max_codepoint = 0x10FFFF
 
   mapped = 0
   disallowed = 0
