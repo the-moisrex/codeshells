@@ -72,8 +72,8 @@ END {
   total = max_codepoint + 1
   uncovered = total - covered
 
-  # Assume uncovered code points are valid by default
-  valid += uncovered
+  # Assume uncovered code points are valid by default (I think they're disallowed)
+  # valid += uncovered
 
   not_valid = total - valid
 
