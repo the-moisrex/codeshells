@@ -1,0 +1,21 @@
+:root {
+    --bg: #333;
+    --fg: #eee;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+[id] {
+    scroll-margin-top: 60px;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--fg);
+    margin: 0;
+    padding: 0;
+}
+
+
