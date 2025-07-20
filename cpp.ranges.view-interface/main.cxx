@@ -8,7 +8,7 @@ import standard;
 
 using namespace std;
 
-template <class T, class A>
+template <class T, class A = std::allocator<T>>
 class VectorView : public std::ranges::view_interface<VectorView<T, A>> {
   public:
     VectorView() = default;
@@ -23,6 +23,9 @@ class VectorView : public std::ranges::view_interface<VectorView<T, A>> {
   private:
     typename std::vector<T, A>::const_iterator m_begin{}, m_end{};
 };
+
+// static_assert(std::ranges::views::__adaptor::__is_range_adaptor_closure<VectorView<int>>,
+//               "Parser need to be range adaptor closure.");
 
 int main() {
     std::vector<int> v = {1, 4, 9, 16};
