@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Smoothing Algorithms</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            color: #333333;
+            overflow: hidden;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding: 40px 70px 20px;
+            background-color: #1a237e;
+            color: white;
+        }
+        .title {
+            font-size: 40px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            padding: 30px 70px 40px;
+        }
+        .algorithms-container {
+            display: flex;
+            flex-grow: 1;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .algorithm-card {
+            flex: 1;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+        }
+        .algorithm-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a237e;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .algorithm-title .material-icons {
+            margin-right: 10px;
+            color: #3949ab;
+        }
+        .algorithm-description {
+            font-size: 20px;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        .key-points {
+            background-color: #e8eaf6;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        .key-points ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+        .key-points li {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        .formula {
+            font-family: 'Courier New', monospace;
+            background-color: #f5f5f5;
+            padding: 8px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-size: 18px;
+            text-align: center;
+        }
+        .image-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .image-container img {
+            max-width: 100%;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="header">
+            <h1 class="title">Current Smoothing Algorithms</h1>
+        </div>
+        <div class="content">
+            <div class="algorithms-container">
+                <div class="algorithm-card">
+                    <h2 class="algorithm-title">
+                        <i class="material-icons">timeline</i>
+                        Linear Interpolation
+                    </h2>
+                    <div class="algorithm-description">
+                        Creates intermediate points between start and end positions to smooth mouse movement.
+                    </div>
+                    <div class="key-points">
+                        <ul>
+                            <li>Uses easing function (easeInQuad)</li>
+                            <li>Fixed 10 interpolation steps</li>
+                            <li>Emits both X and Y events</li>
+                        </ul>
+                        <div class="formula">
+                            lerp(start, end, t) = start × (1 − t) + end × t
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="algorithm-card">
+                    <h2 class="algorithm-title">
+                        <i class="material-icons">filter_list</i>
+                        Low-pass Filter
+                    </h2>
+                    <div class="algorithm-description">
+                        Attenuates high-frequency signals (rapid changes) while allowing low-frequency signals to pass.
+                    </div>
+                    <div class="key-points">
+                        <ul>
+                            <li>Fixed alpha value (0.9)</li>
+                            <li>Stores previous smoothed values</li>
+                            <li>Filters mouse movement events</li>
+                        </ul>
+                        <div class="formula">
+                            smoothed = α × newInput + (1 − α) × previousSmoothed
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="algorithm-card">
+                    <h2 class="algorithm-title">
+                        <i class="material-icons">analytics</i>
+                        Kalman Filter
+                    </h2>
+                    <div class="algorithm-description">
+                        Predicts mouse position using previous state and updates with new measurements.
+                    </div>
+                    <div class="key-points">
+                        <ul>
+                            <li>Fixed process noise (0.1)</li>
+                            <li>Fixed measurement noise (0.5)</li>
+                            <li>Two-step process: predict and update</li>
+                        </ul>
+                        <div class="formula">
+                            Prediction: x̂(k|k-1) = F·x̂(k-1|k-1)<br>
+                            Update: x̂(k|k) = x̂(k|k-1) + K·[z(k) - H·x̂(k|k-1)]
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="image-container">
+                <img src="https://sfile.chatglm.cn/images-ppt/1710cd628dc9.jpg" alt="Linear Interpolation Diagram" width="600">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

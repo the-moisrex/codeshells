@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Identified Problems in Current Implementation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            color: #333333;
+            overflow: hidden;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding: 40px 70px 20px;
+            background-color: #1a237e;
+            color: white;
+        }
+        .title {
+            font-size: 40px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            padding: 30px 70px 40px;
+        }
+        .problems-container {
+            display: flex;
+            flex-grow: 1;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        .problem-card {
+            flex: 1;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .problem-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1a237e;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .problem-title .material-icons {
+            margin-right: 10px;
+            color: #c62828;
+        }
+        .problem-list {
+            list-style-type: none;
+        }
+        .problem-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+        .problem-item .material-icons {
+            color: #e57373;
+            margin-right: 8px;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .problem-text {
+            flex-grow: 1;
+        }
+        .image-container {
+            display: flex;
+            justify-content: center;
+            margin-top: auto;
+        }
+        .image-container img {
+            max-width: 100%;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .caption {
+            text-align: center;
+            font-size: 16px;
+            color: #666;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="header">
+            <h1 class="title">Identified Problems in Current Implementation</h1>
+        </div>
+        <div class="content">
+            <div class="problems-container">
+                <div class="problem-card">
+                    <h2 class="problem-title">
+                        <i class="material-icons">error_outline</i>
+                        Linear Interpolation
+                    </h2>
+                    <ul class="problem-list">
+                        <li class="problem-item">
+                            <i class="material-icons">arrow_right</i>
+                            <span class="problem-text">Hardcoded REL_X/REL_Y values</span>
+                        </li>
+                        <li class="problem-item">
+                            <i class="material-icons">arrow_right</i>
+                            <span class="problem-text">Fixed steps value (10)</span>
+                        </li>
+                        <li class="problem-item">
+                            <i class="material-icons">arrow_right</i>
+                            <span class="problem-text">Hardcoded easing function</span>
+                        </li>
+                        <li class="problem-item">
+                            <i class="material-icons">arrow_right</i>
+                            <span class="problem-text">Emits both X/Y events even if only one axis changed</span>
+                        </li>
+                        <li class="problem-item">
+                            <i class="material-icons">arrow_right</i>
+                            <span class="problem-text">No configuration options</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="problem-card">
+                    <h2 class="problem-title">
+                        <i class="material-icons">error_outline</i>
+                        Low-pass Filter
+                    </h2>
+                    <ul class="problem-list">
+                        <li class="problem-item">
+                            <i class="material-icons">arrow_right</i>
+                            <span class="problem-text">Hardcoded alpha value (0.9)</span>
+                        </li>
+                        <li class="problem-item">
+                            <i class="material-icons">arrow_right</i>
+                            <span class="problem-text">Improper initialization (prev_x/y = 0)</span>
+                        </li>
+                        <li class="problem-item">
+                            <i class="material-icons">arrow_right</i>
+                            <span class="problem-text">Emits events even without movement</span>
+                        </li>
+                        <li class="problem-item">
+                            <i class="material-icons">arrow_right</i>
+                            <span class="problem-text">Limited to 2 dimensions (X/Y)</span>
+                        </li>
+                        <li class="problem-item">
+                            <i class="material-icons">arrow_right</i>
+                            <span class="problem-text">No parameter validation</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="problem-card">
+                    <h2 class="problem-title">
+                        <i class="material-icons">error_outline</i>
+                        Kalman Filter
+                    </h2>
+                    <ul class="problem-list">
+                        <li class="problem-item">
+                            <i class="material-icons">arrow_right</i>
+                            <span class="problem-text">Simplified implementation</span>
+                        </li>
+                        <li class="problem-item">
+                            <i class="material-icons">arrow_right</i>
+                            <span class="problem-text">Hardcoded noise parameters</span>
+                        </li>
+                        <li class="problem-item">
+                            <i class="material-icons">arrow_right</i>
+                            <span class="problem-text">Improper initialization</span>
+                        </li>
+                        <li class="problem-item">
+                            <i class="material-icons">arrow_right</i>
+                            <span class="problem-text">Potentially incorrect Kalman gain</span>
+                        </li>
+                        <li class="problem-item">
+                            <i class="material-icons">arrow_right</i>
+                            <span class="problem-text">Missing state covariance update</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="image-container">
+                <div>
+                    <img src="https://sfile.chatglm.cn/images-ppt/661544e0583f.png" alt="Filter Comparison" width="800">
+                    <p class="caption">Comparison of different filter types showing their smoothing characteristics</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

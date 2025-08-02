@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Making Algorithms More Abstract</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            color: #333333;
+            overflow: hidden;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding: 40px 70px 20px;
+            background-color: #1a237e;
+            color: white;
+        }
+        .title {
+            font-size: 40px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            padding: 30px 70px 40px;
+        }
+        .abstraction-container {
+            display: flex;
+            flex-grow: 1;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .left-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .right-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .abstraction-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .abstraction-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a237e;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .abstraction-title .material-icons {
+            margin-right: 10px;
+            color: #5c6bc0;
+        }
+        .abstraction-list {
+            list-style-type: none;
+        }
+        .abstraction-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            font-size: 20px;
+        }
+        .abstraction-item .material-icons {
+            color: #7986cb;
+            margin-right: 10px;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .abstraction-text {
+            flex-grow: 1;
+        }
+        .code-block {
+            background-color: #f5f5f5;
+            border-radius: 6px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            margin-top: 10px;
+            color: #333;
+            overflow: auto;
+            flex-grow: 1;
+        }
+        .keyword {
+            color: #1a237e;
+            font-weight: 600;
+        }
+        .class-name {
+            color: #0d47a1;
+        }
+        .method {
+            color: #00695c;
+        }
+        .comment {
+            color: #546e7a;
+            font-style: italic;
+        }
+        .uml-diagram {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .diagram-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1a237e;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .diagram {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .interface-box {
+            width: 220px;
+            height: 120px;
+            border: 2px solid #5c6bc0;
+            border-radius: 6px;
+            background-color: #e8eaf6;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        .interface-title {
+            font-weight: 600;
+            font-size: 18px;
+            color: #1a237e;
+            margin-bottom: 10px;
+        }
+        .interface-methods {
+            font-size: 14px;
+            text-align: center;
+        }
+        .implementation-box {
+            width: 180px;
+            height: 100px;
+            border: 2px solid #26a69a;
+            border-radius: 6px;
+            background-color: #e0f2f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            font-weight: 600;
+            font-size: 16px;
+            color: #00695c;
+        }
+        .box-lerp {
+            top: 150px;
+            left: 100px;
+        }
+        .box-lowpass {
+            top: 150px;
+            left: 350px;
+        }
+        .box-kalman {
+            top: 150px;
+            left: 600px;
+        }
+        .connector {
+            position: absolute;
+            background-color: #5c6bc0;
+            z-index: 1;
+        }
+        .vertical-connector {
+            width: 2px;
+            height: 30px;
+            top: 120px;
+        }
+        .horizontal-connector {
+            height: 2px;
+            top: 150px;
+        }
+        .connector-left {
+            left: 190px;
+            width: 90px;
+        }
+        .connector-middle {
+            left: 340px;
+            width: 90px;
+        }
+        .connector-right {
+            left: 590px;
+            width: 90px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="header">
+            <h1 class="title">Making Algorithms More Abstract</h1>
+        </div>
+        <div class="content">
+            <div class="abstraction-container">
+                <div class="left-section">
+                    <div class="abstraction-card">
+                        <h2 class="abstraction-title">
+                            <i class="material-icons">architecture</i>
+                            Abstract Interface
+                        </h2>
+                        <div class="code-block">
+                            <span class="keyword">class</span> <span class="class-name">ISmoothingAlgorithm</span> {<br>
+                            &nbsp;&nbsp;<span class="keyword">public</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">virtual</span> <span class="method">void</span> initialize() = 0;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">virtual</span> <span class="method">context_action</span> process(Context& ctx) = 0;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">virtual</span> <span class="method">void</span> reset() = 0;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">virtual</span> <span class="method">void</span> setParameters(<span class="keyword">const</span> Parameters& params) = 0;<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">virtual</span> ~<span class="class-name">ISmoothingAlgorithm</span>() = <span class="keyword">default</span>;<br>
+                            };
+                        </div>
+                    </div>
+                    
+                    <div class="abstraction-card">
+                        <h2 class="abstraction-title">
+                            <i class="material-icons">factory</i>
+                            Factory Pattern
+                        </h2>
+                        <ul class="abstraction-list">
+                            <li class="abstraction-item">
+                                <i class="material-icons">settings</i>
+                                <span class="abstraction-text">Centralized creation</span>
+                            </li>
+                            <li class="abstraction-item">
+                                <i class="material-icons">add_circle</i>
+                                <span class="abstraction-text">Easy algorithm registration</span>
+                            </li>
+                            <li class="abstraction-item">
+                                <i class="material-icons">swap_horiz</i>
+                                <span class="abstraction-text">Runtime algorithm switching</span>
+                            </li>
+                            <li class="abstraction-item">
+                                <i class="material-icons">build</i>
+                                <span class="abstraction-text">Parameter validation</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="right-section">
+                    <div class="abstraction-card">
+                        <h2 class="abstraction-title">
+                            <i class="material-icons">code</i>
+                            Implementation Example
+                        </h2>
+                        <div class="code-block">
+                            <span class="keyword">class</span> <span class="class-name">LinearInterpolation</span> : <span class="keyword">public</span> <span class="class-name">ISmoothingAlgorithm</span> {<br>
+                            &nbsp;&nbsp;<span class="comment">// Implementation details...</span><br>
+                            &nbsp;&nbsp;<span class="keyword">public</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="method">context_action</span> process(Context& ctx) <span class="keyword">override</span> {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Process mouse events</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span> (is_mouse_movement(event)) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Store previous values</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prev_vals[event.code()] = cur_vals[event.code()];<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cur_vals[event.code()] = event.value();<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">// Continue processing...</span><br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                            };
+                        </div>
+                    </div>
+                    
+                    <div class="abstraction-card">
+                        <h2 class="abstraction-title">
+                            <i class="material-icons">star</i>
+                            Benefits of Abstraction
+                        </h2>
+                        <ul class="abstraction-list">
+                            <li class="abstraction-item">
+                                <i class="material-icons">swap_horiz</i>
+                                <span class="abstraction-text">Easy algorithm switching</span>
+                            </li>
+                            <li class="abstraction-item">
+                                <i class="material-icons">add_circle_outline</i>
+                                <span class="abstraction-text">Simpler to add new algorithms</span>
+                            </li>
+                            <li class="abstraction-item">
+                                <i class="material-icons">format_align_left</i>
+                                <span class="abstraction-text">Cleaner code structure</span>
+                            </li>
+                            <li class="abstraction-item">
+                                <i class="material-icons">check_circle</i>
+                                <span class="abstraction-text">Better testability</span>
+                            </li>
+                            <li class="abstraction-item">
+                                <i class="material-icons">settings_applications</i>
+                                <span class="abstraction-text">Consistent API</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="uml-diagram">
+                <h3 class="diagram-title">Interface and Implementation Structure</h3>
+                <div class="diagram">
+                    <div class="interface-box">
+                        <div class="interface-title">ISmoothingAlgorithm</div>
+                        <div class="interface-methods">
+                            + initialize()<br>
+                            + process()<br>
+                            + reset()
+                        </div>
+                    </div>
+                    
+                    <div class="connector vertical-connector" style="left: 190px;"></div>
+                    <div class="connector horizontal-connector connector-left"></div>
+                    <div class="connector horizontal-connector connector-middle"></div>
+                    <div class="connector horizontal-connector connector-right"></div>
+                    
+                    <div class="implementation-box box-lerp">LinearInterpolation</div>
+                    <div class="implementation-box box-lowpass">LowPassFilter</div>
+                    <div class="implementation-box box-kalman">KalmanFilter</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

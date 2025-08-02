@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Other Smoothing Algorithms to Consider</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            color: #333333;
+            overflow: hidden;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding: 40px 70px 20px;
+            background-color: #1a237e;
+            color: white;
+        }
+        .title {
+            font-size: 40px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            padding: 30px 70px 40px;
+        }
+        .algorithms-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, auto);
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-grow: 1;
+        }
+        .algorithm-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        .algorithm-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a237e;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .algorithm-title .material-icons {
+            margin-right: 8px;
+            color: #5c6bc0;
+            font-size: 20px;
+        }
+        .algorithm-description {
+            font-size: 18px;
+            margin-bottom: 10px;
+            flex-grow: 1;
+        }
+        .key-points {
+            font-size: 16px;
+            color: #555;
+        }
+        .key-point {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 6px;
+        }
+        .key-point .material-icons {
+            color: #7986cb;
+            margin-right: 6px;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .formula {
+            font-family: 'Courier New', monospace;
+            background-color: #f5f5f5;
+            padding: 6px;
+            border-radius: 4px;
+            margin: 8px 0;
+            font-size: 16px;
+            text-align: center;
+        }
+        .image-container {
+            display: flex;
+            justify-content: center;
+            margin-top: auto;
+        }
+        .image-container img {
+            max-width: 100%;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .caption {
+            text-align: center;
+            font-size: 16px;
+            color: #666;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="header">
+            <h1 class="title">Other Smoothing Algorithms to Consider</h1>
+        </div>
+        <div class="content">
+            <div class="algorithms-grid">
+                <div class="algorithm-card">
+                    <h2 class="algorithm-title">
+                        <i class="material-icons">show_chart</i>
+                        Moving Average
+                    </h2>
+                    <div class="algorithm-description">
+                        Averages recent data points to reduce noise
+                    </div>
+                    <div class="key-points">
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Simple to implement</span>
+                        </div>
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Window size adjustable</span>
+                        </div>
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Weighted version available</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="algorithm-card">
+                    <h2 class="algorithm-title">
+                        <i class="material-icons">timeline</i>
+                        Exponential Moving Average
+                    </h2>
+                    <div class="algorithm-description">
+                        Gives more weight to recent data points
+                    </div>
+                    <div class="formula">
+                        EMA = α·current + (1-α)·previous EMA
+                    </div>
+                    <div class="key-points">
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Responsive to changes</span>
+                        </div>
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Less memory usage</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="algorithm-card">
+                    <h2 class="algorithm-title">
+                        <i class="material-icons">functions</i>
+                        Savitzky-Golay Filter
+                    </h2>
+                    <div class="algorithm-description">
+                        Fits polynomial to local data points
+                    </div>
+                    <div class="key-points">
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Preserves higher moments</span>
+                        </div>
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Good for peak preservation</span>
+                        </div>
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Adjustable polynomial degree</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="algorithm-card">
+                    <h2 class="algorithm-title">
+                        <i class="material-icons">blur_on</i>
+                        Gaussian Filter
+                    </h2>
+                    <div class="algorithm-description">
+                        Uses Gaussian function for weighted averaging
+                    </div>
+                    <div class="key-points">
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Natural smoothing effect</span>
+                        </div>
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Adjustable sigma parameter</span>
+                        </div>
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Good for noise reduction</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="algorithm-card">
+                    <h2 class="algorithm-title">
+                        <i class="material-icons">filter_center_focus</i>
+                        Median Filter
+                    </h2>
+                    <div class="algorithm-description">
+                        Replaces value with median of neighboring points
+                    </div>
+                    <div class="key-points">
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Effective against outliers</span>
+                        </div>
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Preserves edges</span>
+                        </div>
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Non-linear filtering</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="algorithm-card">
+                    <h2 class="algorithm-title">
+                        <i class="material-icons">trending_up</i>
+                        Double Exponential Smoothing
+                    </h2>
+                    <div class="algorithm-description">
+                        Extends exponential smoothing with trend component
+                    </div>
+                    <div class="formula">
+                        Level: L = α·Y + (1-α)·(L+T)<br>
+                        Trend: T = β·(L-Lₚᵣₑᵥ) + (1-β)·T
+                    </div>
+                    <div class="key-points">
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Captures trends</span>
+                        </div>
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Good for forecasting</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="algorithm-card">
+                    <h2 class="algorithm-title">
+                        <i class="material-icons">euro</i>
+                        One Euro Filter
+                    </h2>
+                    <div class="algorithm-description">
+                        Adaptive filter for real-time noisy signals
+                    </div>
+                    <div class="key-points">
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Adjusts to signal speed</span>
+                        </div>
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Reduces jitter without lag</span>
+                        </div>
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Good for interactive systems</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="algorithm-card">
+                    <h2 class="algorithm-title">
+                        <i class="material-icons">bezier_curve</i>
+                        Bezier Curve Smoothing
+                    </h2>
+                    <div class="algorithm-description">
+                        Uses Bezier curves for natural-looking paths
+                    </div>
+                    <div class="key-points">
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Creates smooth curves</span>
+                        </div>
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Natural movement feel</span>
+                        </div>
+                        <div class="key-point">
+                            <i class="material-icons">check_circle</i>
+                            <span>Control point adjustment</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="image-container">
+                <div>
+                    <img src="https://sfile.chatglm.cn/images-ppt/058ce13379cf.png" alt="Smoothing Algorithms Comparison" width="800">
+                    <p class="caption">Comparison of different smoothing algorithms showing their characteristics</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

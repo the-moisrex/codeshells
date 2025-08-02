@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Fix the Problems</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            color: #333333;
+            overflow: hidden;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding: 40px 70px 20px;
+            background-color: #1a237e;
+            color: white;
+        }
+        .title {
+            font-size: 40px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            padding: 30px 70px 40px;
+        }
+        .fixes-container {
+            display: flex;
+            flex-grow: 1;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        .fix-card {
+            flex: 1;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .fix-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1a237e;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .fix-title .material-icons {
+            margin-right: 10px;
+            color: #2e7d32;
+        }
+        .fix-list {
+            list-style-type: none;
+        }
+        .fix-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+        .fix-item .material-icons {
+            color: #66bb6a;
+            margin-right: 8px;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .fix-text {
+            flex-grow: 1;
+        }
+        .image-container {
+            display: flex;
+            justify-content: center;
+            margin-top: auto;
+        }
+        .image-container img {
+            max-width: 100%;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .caption {
+            text-align: center;
+            font-size: 16px;
+            color: #666;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="header">
+            <h1 class="title">How to Fix the Problems</h1>
+        </div>
+        <div class="content">
+            <div class="fixes-container">
+                <div class="fix-card">
+                    <h2 class="fix-title">
+                        <i class="material-icons">build</i>
+                        Linear Interpolation
+                    </h2>
+                    <ul class="fix-list">
+                        <li class="fix-item">
+                            <i class="material-icons">check_circle</i>
+                            <span class="fix-text">Make REL_X/REL_Y configurable</span>
+                        </li>
+                        <li class="fix-item">
+                            <i class="material-icons">check_circle</i>
+                            <span class="fix-text">Customize steps value via constructor</span>
+                        </li>
+                        <li class="fix-item">
+                            <i class="material-icons">check_circle</i>
+                            <span class="fix-text">Allow configurable easing function</span>
+                        </li>
+                        <li class="fix-item">
+                            <i class="material-icons">check_circle</i>
+                            <span class="fix-text">Emit events only for changed axes</span>
+                        </li>
+                        <li class="fix-item">
+                            <i class="material-icons">check_circle</i>
+                            <span class="fix-text">Add parameter validation</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="fix-card">
+                    <h2 class="fix-title">
+                        <i class="material-icons">build</i>
+                        Low-pass Filter
+                    </h2>
+                    <ul class="fix-list">
+                        <li class="fix-item">
+                            <i class="material-icons">check_circle</i>
+                            <span class="fix-text">Make alpha configurable (0 < alpha < 1)</span>
+                        </li>
+                        <li class="fix-item">
+                            <i class="material-icons">check_circle</i>
+                            <span class="fix-text">Initialize with first actual mouse values</span>
+                        </li>
+                        <li class="fix-item">
+                            <i class="material-icons">check_circle</i>
+                            <span class="fix-text">Only emit events when movement detected</span>
+                        </li>
+                        <li class="fix-item">
+                            <i class="material-icons">check_circle</i>
+                            <span class="fix-text">Add threshold for minimal movement</span>
+                        </li>
+                        <li class="fix-item">
+                            <i class="material-icons">check_circle</i>
+                            <span class="fix-text">Add parameter validation</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="fix-card">
+                    <h2 class="fix-title">
+                        <i class="material-icons">build</i>
+                        Kalman Filter
+                    </h2>
+                    <ul class="fix-list">
+                        <li class="fix-item">
+                            <i class="material-icons">check_circle</i>
+                            <span class="fix-text">Implement proper prediction/update steps</span>
+                        </li>
+                        <li class="fix-item">
+                            <i class="material-icons">check_circle</i>
+                            <span class="fix-text">Make noise parameters configurable</span>
+                        </li>
+                        <li class="fix-item">
+                            <i class="material-icons">check_circle</i>
+                            <span class="fix-text">Proper initialization of state variables</span>
+                        </li>
+                        <li class="fix-item">
+                            <i class="material-icons">check_circle</i>
+                            <span class="fix-text">Fix Kalman gain calculation</span>
+                        </li>
+                        <li class="fix-item">
+                            <i class="material-icons">check_circle</i>
+                            <span class="fix-text">Add state covariance update</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="image-container">
+                <div>
+                    <img src="https://sfile.chatglm.cn/images-ppt/95dbc07fb754.png" alt="Kalman Filter Flow" width="800">
+                    <p class="caption">Kalman Filter prediction and update cycle flow diagram</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

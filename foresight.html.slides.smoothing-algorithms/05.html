@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Making Algorithms More Generalized</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            color: #333333;
+            overflow: hidden;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding: 40px 70px 20px;
+            background-color: #1a237e;
+            color: white;
+        }
+        .title {
+            font-size: 40px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            padding: 30px 70px 40px;
+        }
+        .generalization-container {
+            display: flex;
+            flex-grow: 1;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        .generalization-card {
+            flex: 1;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .generalization-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1a237e;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .generalization-title .material-icons {
+            margin-right: 10px;
+            color: #5c6bc0;
+        }
+        .generalization-list {
+            list-style-type: none;
+        }
+        .generalization-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+        .generalization-item .material-icons {
+            color: #7986cb;
+            margin-right: 8px;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        .generalization-text {
+            flex-grow: 1;
+        }
+        .image-container {
+            display: flex;
+            justify-content: center;
+            margin-top: auto;
+        }
+        .image-container img {
+            max-width: 100%;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .caption {
+            text-align: center;
+            font-size: 16px;
+            color: #666;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="header">
+            <h1 class="title">Making Algorithms More Generalized</h1>
+        </div>
+        <div class="content">
+            <div class="generalization-container">
+                <div class="generalization-card">
+                    <h2 class="generalization-title">
+                        <i class="material-icons">auto_fix_high</i>
+                        Linear Interpolation
+                    </h2>
+                    <ul class="generalization-list">
+                        <li class="generalization-item">
+                            <i class="material-icons">trending_up</i>
+                            <span class="generalization-text">Template class for different data types</span>
+                        </li>
+                        <li class="generalization-item">
+                            <i class="material-icons">settings</i>
+                            <span class="generalization-text">Configurable parameters via constructor</span>
+                        </li>
+                        <li class="generalization-item">
+                            <i class="material-icons">view_in_ar</i>
+                            <span class="generalization-text">Support for N-dimensional interpolation</span>
+                        </li>
+                        <li class="generalization-item">
+                            <i class="material-icons">swap_horiz</i>
+                            <span class="generalization-text">Pluggable easing functions</span>
+                        </li>
+                        <li class="generalization-item">
+                            <i class="material-icons">tune</i>
+                            <span class="generalization-text">Runtime parameter adjustment</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="generalization-card">
+                    <h2 class="generalization-title">
+                        <i class="material-icons">auto_fix_high</i>
+                        Low-pass Filter
+                    </h2>
+                    <ul class="generalization-list">
+                        <li class="generalization-item">
+                            <i class="material-icons">view_in_ar</i>
+                            <span class="generalization-text">Support for any number of dimensions</span>
+                        </li>
+                        <li class="generalization-item">
+                            <i class="material-icons">tune</i>
+                            <span class="generalization-text">Configurable filter parameters</span>
+                        </li>
+                        <li class="generalization-item">
+                            <i class="material-icons">sync_alt</i>
+                            <span class="generalization-text">Per-axis smoothing factors</span>
+                        </li>
+                        <li class="generalization-item">
+                            <i class="material-icons">speed</i>
+                            <span class="generalization-text">Adaptive cutoff frequency</span>
+                        </li>
+                        <li class="generalization-item">
+                            <i class="material-icons">compare_arrows</i>
+                            <span class="generalization-text">Dynamic parameter adjustment</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="generalization-card">
+                    <h2 class="generalization-title">
+                        <i class="material-icons">auto_fix_high</i>
+                        Kalman Filter
+                    </h2>
+                    <ul class="generalization-list">
+                        <li class="generalization-item">
+                            <i class="material-icons">view_in_ar</i>
+                            <span class="generalization-text">Multi-dimensional state support</span>
+                        </li>
+                        <li class="generalization-item">
+                            <i class="material-icons">settings</i>
+                            <span class="generalization-text">Configurable noise parameters</span>
+                        </li>
+                        <li class="generalization-item">
+                            <i class="material-icons">model_training</i>
+                            <span class="generalization-text">Different noise models</span>
+                        </li>
+                        <li class="generalization-item">
+                            <i class="material-icons">sync</i>
+                            <span class="generalization-text">Adaptive parameter adjustment</span>
+                        </li>
+                        <li class="generalization-item">
+                            <i class="material-icons">architecture</i>
+                            <span class="generalization-text">Extensible state model</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="image-container">
+                <div>
+                    <img src="https://sfile.chatglm.cn/images-ppt/5c07d82236c1.png" alt="Smoothing Algorithm Comparison" width="800">
+                    <p class="caption">Comparison of moving average and exponential smoothing weights</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
