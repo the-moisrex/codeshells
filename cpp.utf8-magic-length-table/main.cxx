@@ -7,12 +7,12 @@ using namespace std;
 
 int main() {
     std::array<uint8_t, 256> lens;
-    lens.fill(0);
+    lens.fill(1);
 
     for (uint8_t cp = 0; cp != 0xFF; ++cp) {
         lens[(cp & ~0b11) | 0b00] = 1;
         lens[(cp & ~0b11) | 0b01] = 1;
-        // lens[(cp & ~0b11) | 0b11] = 1;
+        // lens[(cp & ~0b11) | 0b10] = 1;
         lens[(cp & ~0b1111) | 0b1110] = 2;
         lens[(cp & ~0b11'1111) | 0b11'1010] = 3;
         lens[(cp & ~0b1111'1111) | 0b1110'1010] = 4;
