@@ -1,6 +1,3 @@
-# Tutorial:
-#   https://www.kitware.com/import-cmake-the-experiment-is-over/
-
 cmake_minimum_required(VERSION 3.13)
 project(clang-print-class-plugin)
 
@@ -9,20 +6,20 @@ project(clang-print-class-plugin)
 find_package(Clang  CONFIG)
 
 
-message(STATUS "Found LLVM ${LLVM_DIR}")
+# message(STATUS "Found LLVM ${LLVM_DIR}")
 message(STATUS "Found Clang ${Clang_DIR}")
 
 
 set(CMAKE_CXX_STANDARD 26)
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+# set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 
 add_library(print-class-plugin SHARED main.cxx)
 
 
 target_include_directories(print-class-plugin PRIVATE
-${LLVM_INCLUDE_DIRS}
-${CLANG_INCLUDE_DIRS}
+    # ${LLVM_INCLUDE_DIRS}
+    ${CLANG_INCLUDE_DIRS}
 )
 
 
