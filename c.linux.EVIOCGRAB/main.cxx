@@ -20,56 +20,53 @@ enum class grab_state {
 };
 
 grab_state check_grab_state(int fd) {
+    using enum grab_state;
     int arg = 0;
-    int r;
 
     // --- Try to ungrab (probe) ---
     errno = 0;
-    r = ioctl(fd, EVIOCGRAB, &arg);
-
-    if (r == 0) {
+    if (ioctl(fd, EVIOCGRAB, &arg) == 0) {
         // Successfully ungrabbed → this FD *had* the grab.
         arg = 1;
         if (ioctl(fd, EVIOCGRAB, &arg) == -1) {
-            return grab_state::error;
+            return error;
         }
-        return grab_state::grabbing;
+        return grabbing;
     }
 
     // Interpret common errno results
     switch (errno) {
-    case EINVAL:
-        return grab_state::not_grabbing;
+    case 0:
+        break;
     case EBUSY:
-        // Another process has the grab; this FD definitely does NOT.
-        return grab_state::not_grabbing;
+        // Another process has the grab
+        return grabbing;
+    case EINVAL:
     case ENOTTY:
-        return grab_state::not_evdev;
     case EPERM:
     case EACCES:
-        return grab_state::permission_denied;
+    default:
+        return error;
     }
 
     // --- Try to grab (secondary probe) ---
     errno = 0;
     arg = 1;
 
-    r = ioctl(fd, EVIOCGRAB, &arg);
-
-    if (r == 0) {
+    if (ioctl(fd, EVIOCGRAB, &arg) == 0) {
         // We could grab → this FD was NOT grabbing before.
         arg = 0;
         if (ioctl(fd, EVIOCGRAB, &arg) == -1) {
-            return grab_state::error;
+            return error;
         }
-        return grab_state::not_grabbing;
+        return not_grabbing;
     }
 
     if (errno == EBUSY) {
-        return grab_state::not_grabbing;
+        return grabbing;
     }
 
-    return grab_state::error;
+    return error;
 }
 
 // Example usage
