@@ -1,4 +1,3 @@
-#include <cerrno>
 import standard;
 
 #include <cerrno>
@@ -6,17 +5,20 @@ import standard;
 #include <fcntl.h>
 #include <iostream>
 #include <linux/input.h>
+#include <print>
 #include <string>
 #include <string_view>
 #include <sys/ioctl.h>
 #include <unistd.h>
+#include <utility>
 
 enum class grab_state {
-    grabbing,          // this FD currently has the grab
-    not_grabbing,      // this FD does NOT have the grab
-    not_evdev,         // ENOTTY
-    permission_denied, // EPERM / EACCES
-    error              // unexpected error (check errno)
+    grabbing,           // this FD currently has the grab
+    grabbing_by_others, // for v2
+    not_grabbing,       // this FD does NOT have the grab
+    not_evdev,          // ENOTTY
+    permission_denied,  // EPERM / EACCES
+    error               // unexpected error (check errno)
 };
 
 grab_state check_grab_state(int fd) {
@@ -69,6 +71,74 @@ grab_state check_grab_state(int fd) {
     return error;
 }
 
+grab_state check_grab_state_v2(int const fd) noexcept {
+    using enum grab_state;
+    constexpr int grab_it = 1;
+    constexpr int ungrab_it = 0;
+
+    // First: try to ungrab
+    errno = 0;
+    if (ioctl(fd, EVIOCGRAB, &grab_it) == 0) {
+        errno = 0;
+        if (ioctl(fd, EVIOCGRAB, &ungrab_it) != 0) [[unlikely]] {
+            switch (errno) {
+            case EBUSY:
+                // Already grabbed by another process, and it's a race condition
+                std::println(
+                    "Race condition, someone grabbed it before we could "
+                    "re-grab it.");
+                return grabbing;
+            case EINVAL:
+                std::println("Kernel too old or not an event device");
+                break;
+            case ENOTTY:
+                std::println("Not an input event device");
+                break;
+            case ENODEV:
+                std::println(
+                    "No such device; The device node was removed or is "
+                    "invalid");
+                break;
+            case EPERM:
+                std::println(
+                    "Operation not permitted: like EACCES but returned when "
+                    "grab is denied by"
+                    "policy");
+                break;
+            case EACCES:
+                std::println(
+                    "Permission denied (need CAP_SYS_RAWIO or relaxed udev "
+                    "rules)");
+                break;
+            default:
+                std::println("Unknown ioctl error.");
+                break;
+            }
+            std::println(
+                "Re-UnGrabbing the input failed after trying to check if it's "
+                "grabbed or not.");
+            return error;
+        }
+        return not_grabbing;
+    }
+
+    // Interpret common errno results
+    switch (errno) {
+    case EBUSY:
+        // Already grabbed by another process
+        return grabbing_by_others;
+    case EINVAL: // Invalid argument; Kernel too old or not an event device
+    case ENOTTY: // Not an input event device
+    case EPERM:  // Operation not permitted: like EACCES but returned when grab
+                 // is denied by policy
+    case EACCES: // Permission denied (need CAP_SYS_RAWIO or relaxed udev rules)
+    case ENODEV: // No such device; The device node was removed or is invalid
+    default:
+        break;
+    }
+    return error;
+}
+
 // Example usage
 int main(int argc, char** argv) {
     if (argc != 2) {
@@ -84,12 +154,15 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    grab_state state = check_grab_state(fd);
+    grab_state state = check_grab_state_v2(fd);
     close(fd);
 
     switch (state) {
     case grab_state::grabbing:
         std::cout << device << ": this FD is grabbing the device.\n";
+        break;
+    case grab_state::grabbing_by_others:
+        std::cout << device << ": this FD is being grabbed by someone.\n";
         break;
     case grab_state::not_grabbing:
         std::cout << device << ": this FD is NOT grabbing the device.\n";
