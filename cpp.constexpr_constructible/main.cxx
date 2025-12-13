@@ -11,8 +11,8 @@ using namespace std;
 // concept to check if type T has a constexpr constructor
 // and thus can be used in constexpr contexts, in another words,
 // the type T can be constructed in compiletime.
-template <typename T>
-concept constexpr_constructible = requires { []<T U = T{}>{}(); };
+// template <typename T>
+// concept constexpr_constructible = requires { []<T U = T{}>{}(); };
 
 // template <typename T>
 // concept constexpr_constructible =  requires { std::array<int, (T{}, 1)>{}; };
@@ -20,6 +20,14 @@ concept constexpr_constructible = requires { []<T U = T{}>{}(); };
 
 // template <typename T, typename ...Args>
 // concept constexpr_constructible = requires { []<T U = T{std::declval<Args>()...}>{}(); };
+
+// template <typename T>
+// concept constexpr_constructible = requires { []<T={}>{}(); };
+
+
+template <typename T, typename ...Args>
+concept constexpr_constructible = requires { []<T={Args{}...}>{}(); };
+
 
 
 template <constexpr_constructible T>
@@ -42,7 +50,7 @@ static_assert(constexpr_constructible<int>);
 static_assert(constexpr_constructible<B>);
 static_assert(!constexpr_constructible<A>);
 static_assert(!constexpr_constructible<int&>);
-// static_assert(constexpr_constructible<int, int>);
+static_assert(constexpr_constructible<int, int>);
 
 int main() { return 0; }
 
