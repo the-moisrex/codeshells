@@ -5,13 +5,14 @@ import standard;
 
 using namespace std;
 
-template <typename T>
-concept constexpr_constructible = requires {
-    requires [] consteval {
-        [[maybe_unused]] T t{};
-        return true;
-    }(); // If it fails, T cannot be compile time constructed.
-};
+// template <typename T>
+// concept constexpr_constructible = requires {
+//     requires[] consteval {
+//         [[maybe_unused]] T t{};
+//         return true;
+//     }
+//     (); // If it fails, T cannot be compile time constructed.
+// };
 
 // template<typename T>
 // concept constexpr_constructible = []<typename U>() consteval -> bool {
@@ -23,17 +24,22 @@ concept constexpr_constructible = requires {
 //     }
 // }.template operator()<T>();
 
+template <typename T>
+concept constexpr_constructible = requires {
+    requires []() {
+        constexpr T a{};
+        return a;
+    }();
+};
+
 struct A {
     int* a;
 
     // `= default` implies constexpr
-    A() {
-       a = new int(0);
-    }
-
+    A() { a = new int(0); }
 };
 
-struct B{};
+struct B {};
 
 int main() {
 
