@@ -25,8 +25,11 @@ using namespace std;
 // concept constexpr_constructible = requires { []<T={}>{}(); };
 
 
+// template <typename T, typename ...Args>
+// concept constexpr_constructible = requires { []<int=(T{Args{}...}, 0)>{}(); };
+
 template <typename T, typename ...Args>
-concept constexpr_constructible = requires { []<T={Args{}...}>{}(); };
+concept constexpr_constructible = requires { []<T = {Args{}...}>{}(); };
 
 
 
@@ -44,6 +47,8 @@ struct A {
 
 struct B {
     consteval B() = default;
+    B(B const&) = delete;
+    constexpr ~B() { }
 };
 
 static_assert(constexpr_constructible<int>);
