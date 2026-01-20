@@ -11,52 +11,54 @@ using namespace std;
 namespace stl {
     using namespace std;
 
-    namespace tag_invoke_fn_ns {
-        void tag_invoke();
+    // namespace tag_invoke_fn_ns {
+    //     void tag_invoke();
 
-        struct tag_invoke_fn {
-            template <typename Tag, typename... Args>
-                requires requires(Tag tag, Args&&... args) {
-                    tag_invoke(stl::forward<Tag>(tag),
-                               stl::forward<Args>(args)...);
-                }
-            constexpr auto operator()(Tag tag, Args&&... args) const
-                noexcept(noexcept(tag_invoke(stl::forward<Tag>(tag),
-                                             stl::forward<Args>(args)...)))
-                    -> decltype(tag_invoke(stl::forward<Tag>(tag),
-                                           stl::forward<Args>(args)...)) {
-                return tag_invoke(stl::forward<Tag>(tag),
-                                  stl::forward<Args>(args)...);
-            }
-        };
-    } // namespace tag_invoke_fn_ns
+    //     struct tag_invoke_fn {
+    //         template <typename Tag, typename... Args>
+    //             requires requires(Tag tag, Args&&... args) {
+    //                 tag_invoke(stl::forward<Tag>(tag),
+    //                            stl::forward<Args>(args)...);
+    //             }
+    //         constexpr auto operator()(Tag tag, Args&&... args) const
+    //             noexcept(noexcept(tag_invoke(stl::forward<Tag>(tag),
+    //                                          stl::forward<Args>(args)...)))
+    //                 -> decltype(tag_invoke(stl::forward<Tag>(tag),
+    //                                        stl::forward<Args>(args)...)) {
+    //             return tag_invoke(stl::forward<Tag>(tag),
+    //                               stl::forward<Args>(args)...);
+    //         }
+    //     };
+    // } // namespace tag_invoke_fn_ns
 
-    inline namespace tag_invoke_ns {
-        inline constexpr tag_invoke_fn_ns::tag_invoke_fn tag_invoke = {};
-    } // namespace tag_invoke_ns
+    // inline namespace tag_invoke_ns {
+    //     inline constexpr tag_invoke_fn_ns::tag_invoke_fn tag_invoke = {};
+    // } // namespace tag_invoke_ns
 
-    template <typename Tag, typename... Args>
-    concept tag_invocable = requires(Tag tag, Args... args) {
-        tag_invoke(stl::forward<Tag>(tag), stl::forward<Args>(args)...);
-    };
+    // template <typename Tag, typename... Args>
+    // concept tag_invocable = requires(Tag tag, Args... args) {
+    //     tag_invoke(stl::forward<Tag>(tag), stl::forward<Args>(args)...);
+    // };
 
-    template <typename Tag, typename... Args>
-    concept nothrow_tag_invocable =
-        tag_invocable<Tag, Args...> && requires(Tag tag, Args... args) {
-            {
-                tag_invoke(stl::forward<Tag>(tag), stl::forward<Args>(args)...)
-            } noexcept;
-        };
+    // template <typename Tag, typename... Args>
+    // concept nothrow_tag_invocable =
+    //     tag_invocable<Tag, Args...> && requires(Tag tag, Args... args) {
+    //         {
+    //             tag_invoke(stl::forward<Tag>(tag),
+    //             stl::forward<Args>(args)...)
+    //         } noexcept;
+    //     };
 
-    template <typename Tag, typename... Args>
-    using tag_invoke_result = invoke_result<decltype(tag_invoke), Tag, Args...>;
+    // template <typename Tag, typename... Args>
+    // using tag_invoke_result = invoke_result<decltype(tag_invoke), Tag,
+    // Args...>;
 
-    template <typename Tag, typename... Args>
-    using tag_invoke_result_t =
-        invoke_result_t<decltype(tag_invoke), Tag, Args...>;
+    // template <typename Tag, typename... Args>
+    // using tag_invoke_result_t =
+    //     invoke_result_t<decltype(tag_invoke), Tag, Args...>;
 
-    template <auto& Tag>
-    using tag_t = decay_t<decltype(Tag)>;
+    // template <auto& Tag>
+    // using tag_t = decay_t<decltype(Tag)>;
 
 } // namespace stl
 
@@ -120,18 +122,16 @@ static constexpr struct [[nodiscard]] alloc_tag {
 
     /// Customization Point
     template <typename T>
-        requires stl::tag_invocable<alloc_tag, stl::type_identity<T>>
-    [[nodiscard]] constexpr stl::tag_invoke_result_t<alloc_tag,
-                                                     stl::type_identity<T>>
+    [[nodiscard]] constexpr decltype(auto)
     operator()(stl::type_identity<T> ident) const noexcept {
-        return stl::tag_invoke(*this, ident);
+        return tag_invoke(*this, ident);
     }
 
     /// default impl: default construct
     template <Allocator T>
         requires stl::is_default_constructible_v<T>
     [[nodiscard]] friend constexpr T
-    tag_invoke([[maybe_unused]] alloc_tag tag, stl::type_identity<T>) noexcept {
+    tag_invoke(alloc_tag, stl::type_identity<T>) noexcept {
         return {};
     }
 
