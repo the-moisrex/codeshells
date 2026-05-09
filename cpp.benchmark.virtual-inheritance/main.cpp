@@ -82,11 +82,10 @@ struct MIImpl final : MIBase1, MIBase2, MIBase3 {
   NOINLINE int op3() override { return 3; }
 };
 
-struct MIBasePrivate : protected MIBase1, protected MIBase2, protected MIBase3 {
-
-  NOINLINE int op12() { return op1(); }
-  NOINLINE int op22() { return op2(); }
-  NOINLINE int op32() { return op3(); }
+struct MIBasePrivate : private MIBase1, private MIBase2, private MIBase3 {
+  int op12() { return op1(); }
+  int op22() { return op2(); }
+  int op32() { return op3(); }
 };
 
 struct MIImplPrivate final : MIBasePrivate {
@@ -94,11 +93,6 @@ private:
   NOINLINE int op1() override { return 1; }
   NOINLINE int op2() override { return 2; }
   NOINLINE int op3() override { return 3; }
-
-public:
-  NOINLINE int op12() { return op1(); }
-  NOINLINE int op22() { return op2(); }
-  NOINLINE int op32() { return op3(); }
 };
 // ============================================================================
 // 5. Templated Multiple Inheritance (Mixins)
