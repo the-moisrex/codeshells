@@ -342,14 +342,14 @@ BENCHMARK(BM_VirtualInheritance);
 
 using namespace webpp;
 
-struct one_middleware final : middleware_base<one_middleware, middleware_tag> {
+struct one_middleware final : middleware_base<one_middleware> {
   int res = 1;
 
   void operator()(middleware_tag) { ++res; }
 };
 
 static void WebppMiddleware(benchmark::State &state) {
-  middlewares_root root;
+  events_root root;
   one_middleware one;
   root += one;
   benchmark::DoNotOptimize(root);
