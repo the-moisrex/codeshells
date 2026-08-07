@@ -318,11 +318,13 @@ constexpr struct [[nodiscard]] wtest {
 
 int main() {
 
-    auto reg = auto{device_registry};
+    // auto reg = auto{device_registry};
     // auto reg2 = new test{kk};
     // println("Number: {}", reg2->a);
-    // auto reg3 = new wtest{kkk};
-    // println("Number: {}", reg3->a);
+    auto reg4 = new wtest(kkk);
+    reg4->a = 15;
+    auto reg3 = new wtest{*reg4};
+    println("Number: {}", reg3->a);
 
     return 0;
 }
