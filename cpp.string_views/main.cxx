@@ -482,8 +482,167 @@ namespace v7 {
     using string_views = basic_string_views<>;
 } // namespace v7
 
+namespace v11 {
+
+    // Const random-access iterator over a type-erased source of string_views.
+    template <typename SV>
+    class erased_sv_iterator {
+      public:
+        using value_type = SV;
+        using difference_type = std::ptrdiff_t;
+        using iterator_concept = std::random_access_iterator_tag;
+        using iterator_category = std::random_access_iterator_tag;
+
+        // "deref(i) -> SV" where i is a byte offset from the source's begin().
+        using deref_fn = SV (*)(const void* base, std::ptrdiff_t i) noexcept;
+
+        constexpr erased_sv_iterator() = default;
+        constexpr erased_sv_iterator(const void* base, std::ptrdiff_t i,
+                                     deref_fn f) noexcept
+            : base_{base}, i_{i}, f_{f} {}
+
+        SV operator*() const noexcept { return f_(base_, i_); }
+        SV operator[](difference_type n) const noexcept {
+            return f_(base_, i_ + n);
+        }
+
+        erased_sv_iterator& operator++() noexcept {
+            ++i_;
+            return *this;
+        }
+        erased_sv_iterator operator++(int) noexcept {
+            auto t = *this;
+            ++i_;
+            return t;
+        }
+        erased_sv_iterator& operator--() noexcept {
+            --i_;
+            return *this;
+        }
+        erased_sv_iterator operator--(int) noexcept {
+            auto t = *this;
+            --i_;
+            return t;
+        }
+        erased_sv_iterator& operator+=(difference_type n) noexcept {
+            i_ += n;
+            return *this;
+        }
+        erased_sv_iterator& operator-=(difference_type n) noexcept {
+            i_ -= n;
+            return *this;
+        }
+        friend erased_sv_iterator operator+(erased_sv_iterator it,
+                                            difference_type n) noexcept {
+            return it += n;
+        }
+        friend erased_sv_iterator operator+(difference_type n,
+                                            erased_sv_iterator it) noexcept {
+            return it += n;
+        }
+        friend erased_sv_iterator operator-(erased_sv_iterator it,
+                                            difference_type n) noexcept {
+            return it -= n;
+        }
+
+        friend difference_type operator-(const erased_sv_iterator& a,
+                                         const erased_sv_iterator& b) noexcept {
+            return a.i_ - b.i_;
+        }
+        friend bool operator==(const erased_sv_iterator& a,
+                               const erased_sv_iterator& b) noexcept {
+            return a.i_ == b.i_;
+        }
+        friend auto operator<=>(const erased_sv_iterator& a,
+                                const erased_sv_iterator& b) noexcept {
+            return a.i_ <=> b.i_;
+        }
+
+      private:
+        const void* base_ = nullptr;
+        std::ptrdiff_t i_ = 0;
+        deref_fn f_ = nullptr;
+    };
+
+    template <class CharT = char, class TraitsT = std::char_traits<CharT>>
+    class [[nodiscard]] basic_string_views {
+      public:
+        using string_view_type = std::basic_string_view<CharT, TraitsT>;
+        using string_type = std::basic_string<CharT, TraitsT>;
+        using iterator = erased_sv_iterator<string_view_type>;
+        using sentinel = iterator;
+
+      private:
+        using index_type = std::ptrdiff_t;
+        using deref_fn = typename iterator::deref_fn;
+
+        // One function per ELEMENT type, not per container type.
+        template <class T>
+        static string_view_type read(const void* base, index_type i) noexcept {
+            return string_view_type{static_cast<const T*>(base)[i]};
+        }
+
+        const void* base_ = nullptr;
+        index_type size_ = 0;
+        deref_fn deref_ = &read<string_view_type>;
+
+      public:
+        constexpr basic_string_views() noexcept = default;
+
+        // Lvalues only: don't silently retain a pointer into a temporary
+        // vector. Precondition: size fits in ptrdiff_t and data addresses size
+        // elements.
+        template <class R, class P = decltype(std::data(std::declval<R&>())),
+                  class T = std::remove_cv_t<std::remove_pointer_t<P>>>
+            requires std::is_pointer_v<P> && std::convertible_to<P, const T*> &&
+                         std::convertible_to<const T&, string_view_type> &&
+                         std::is_nothrow_constructible_v<string_view_type,
+                                                         const T&> &&
+                         requires(R& r) { std::size(r); }
+        constexpr basic_string_views(R& r) noexcept(
+            noexcept(std::data(r)) &&
+            noexcept(static_cast<index_type>(std::size(r))))
+            : base_(std::data(r)), size_(static_cast<index_type>(std::size(r))),
+              deref_(&read<T>) {}
+
+        constexpr iterator begin() const noexcept { return {base_, 0, deref_}; }
+        constexpr iterator end() const noexcept {
+            return {base_, size_, deref_};
+        }
+        constexpr index_type size() const noexcept { return size_; }
+        constexpr bool empty() const noexcept { return size_ == 0; }
+
+        string_view_type operator[](index_type i) const noexcept {
+            return deref_(base_, i);
+        }
+
+        template <class F>
+        void for_each(F&& f) const {
+            const auto n = size_;
+            const auto b = base_;
+            const auto read_one = deref_;
+
+            if (read_one == &read<string_view_type>) {
+                const auto* p = static_cast<const string_view_type*>(b);
+                for (index_type i = 0; i < n; ++i)
+                    f(string_view_type{p[i]});
+            } else if (read_one == &read<string_type>) {
+                const auto* p = static_cast<const string_type*>(b);
+                for (index_type i = 0; i < n; ++i)
+                    f(string_view_type{p[i]});
+            } else {
+                for (index_type i = 0; i < n; ++i)
+                    f(read_one(b, i));
+            }
+        }
+    };
+
+    using string_views = basic_string_views<>;
+
+} // namespace v11
+
 int main() {
-    using namespace v6;
+    using namespace v11;
 
     std::vector<std::string> strings{"one", "two", "three", "four"};
     std::array<std::string_view, 4> statics{"one", "two", "three", "four"};
